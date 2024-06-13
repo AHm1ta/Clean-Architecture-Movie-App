@@ -1,28 +1,47 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
-    namespace = "com.mita.cleanarchitechturemovieapp"
-    compileSdk = 34
+    compileSdk = Config.compileSdk
+    namespace = Config.detailsNameSpace
 
     defaultConfig {
-        applicationId = "com.mita.cleanarchitechturemovieapp"
-        minSdk = 21
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = Config.applicationId
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
+
+        versionCode = Config.versionCode
+        versionName = Config.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
+        debug {
+            isDebuggable = true
             isMinifyEnabled = false
+            isShrinkResources = false
+
+            buildConfigField("String", "BASE_URL", "\"https://movies-mock-server.vercel.app/\"")
+
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            )
+        }
+        release {
+            isDebuggable = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+
+            buildConfigField("String", "BASE_URL", "\"https://movies-mock-server.vercel.app/\"")
+
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -33,16 +52,68 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        viewBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
+    implementation(Dependencies.AndroidX.core)
+    implementation(Dependencies.AndroidX.appcompat)
+    implementation(Dependencies.AndroidX.material)
+    implementation(Dependencies.AndroidX.constraintlayout)
+    implementation(Dependencies.AndroidX.viewPager)
+
+    //Lifecycle
+    implementation(Dependencies.Lifecycle.lifecycleViewModel)
+    implementation(Dependencies.Lifecycle.lifecycleViewModelSavedState)
+    implementation(Dependencies.Lifecycle.lifecycleLivedata)
+
+    // Retrofit
+    implementation(Dependencies.Retrofit.retrofit)
+    implementation(Dependencies.Retrofit.convertor)
+    implementation(Dependencies.Retrofit.loggingInterceptor)
+
+    // Coil
+    implementation(Dependencies.Coil.coilKt)
+
+
+    // Hilt
+    implementation(Dependencies.Hilt.hilt)
+    kapt(Dependencies.Hilt.compiler)
+    implementation(Dependencies.Hilt.hiltNavigation)
+
+
+    //Coroutine
+    implementation(Dependencies.Coroutine.coroutines)
+    implementation(Dependencies.Coroutine.coroutinesAndroid)
+
+    // Navigation
+    implementation(Dependencies.Nevigation.navigationFragment)
+    implementation(Dependencies.Nevigation.hinavigationUi)
+
+    // Paging
+    implementation(Dependencies.Paging.paging)
+
+    // Timber
+    implementation(Dependencies.Timber.timber)
+    //Lottie
+    implementation(Dependencies.Lottie.lottie)
+
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
+
+    implementation(Dependencies.LegacySupport.legacySupport)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+kapt {
+    correctErrorTypes = true
 }

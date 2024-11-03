@@ -1,0 +1,141 @@
+{
+  "status": 200,
+  "message": "Request success",
+  "data": [
+    {
+      "id": 101,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 102,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 103,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 104,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 105,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 106,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 107,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 108,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 109,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 110,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 111,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 112,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 113,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 114,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    },
+    {
+      "id": 115,
+      "title": "Programming Language C",
+      "username": "Angelina",
+      "description": "Angelina",
+      "likesCount": "150",
+      "commentsCount": "50",
+      "videoUrl": "https://en.wikipedia.org/wiki/C_(programming_language)"
+    }
+  ]
+}

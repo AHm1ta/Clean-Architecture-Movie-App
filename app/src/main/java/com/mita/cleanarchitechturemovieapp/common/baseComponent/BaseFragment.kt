@@ -45,7 +45,7 @@ abstract class BaseFragment<V : ViewBinding> : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        handler!!.removeCallbacksAndMessages(null)
+      //  handler!!.removeCallbacksAndMessages(null)
         _binding = null
     }
 

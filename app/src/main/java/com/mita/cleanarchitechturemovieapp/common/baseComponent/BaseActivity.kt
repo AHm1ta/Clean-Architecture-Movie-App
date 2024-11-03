@@ -7,7 +7,7 @@ import androidx.viewbinding.ViewBinding
 
 abstract class BaseActivity<D: ViewBinding> : AppCompatActivity(){
 
-    private lateinit var binding:D
+    lateinit var binding:D
     private var activityContext: Activity? = null
     protected abstract fun viewBindingLayout(): D
     protected abstract fun initializeView(savedInstanceState: Bundle?)

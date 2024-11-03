@@ -1,10 +1,7 @@
 package com.mita.cleanarchitechturemovieapp.presentation
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.findNavController
 import com.mita.cleanarchitechturemovieapp.R
 import com.mita.cleanarchitechturemovieapp.common.baseComponent.BaseActivity
 import com.mita.cleanarchitechturemovieapp.databinding.ActivityMainBinding
@@ -18,6 +15,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initializeView(savedInstanceState: Bundle?) {
         //TODO("Not yet implemented")
+
     }
 
 }

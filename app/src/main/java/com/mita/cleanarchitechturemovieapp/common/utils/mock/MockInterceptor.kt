@@ -11,7 +11,7 @@ class MockInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val uri = chain.request().url.toUri().toString()
         val responseString = when {
-            uri.endsWith("/example") -> getJsonFromAssets(context, "book_list.json")
+            uri.endsWith("/example") -> getJsonFromAssets(context, "video_list.json")
             else -> "{}"
         }
 

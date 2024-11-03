@@ -10,6 +10,16 @@
         android:name="com.mita.cleanarchitechturemovieapp.presentation.MovieListFragment"
         android:label="MovieListFragment"
         tools:layout="@layout/fragment_movie_list">
+        <action
+            android:id="@+id/action_movieListFragment_to_reelsFragment"
+            app:destination="@id/reelsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reelsFragment"
+        android:name="com.mita.cleanarchitechturemovieapp.presentation.ReelsFragment"
+        android:label="ReelsFragment"
+        tools:layout="@layout/fragment_reels">
     </fragment>
 
 

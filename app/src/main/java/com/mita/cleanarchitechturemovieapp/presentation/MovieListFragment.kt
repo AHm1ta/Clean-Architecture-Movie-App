@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.mita.cleanarchitechturemovieapp.R
 import com.mita.cleanarchitechturemovieapp.common.baseComponent.BaseFragment
 import com.mita.cleanarchitechturemovieapp.common.utils.Resource
 import com.mita.cleanarchitechturemovieapp.databinding.FragmentMovieListBinding
@@ -21,13 +23,22 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding>() {
 
 
     override fun viewBindingLayout(): FragmentMovieListBinding =
-       FragmentMovieListBinding.inflate(layoutInflater)
+        FragmentMovieListBinding.inflate(layoutInflater)
 
 
     override fun initializeView(savedInstanceState: Bundle?) {
-        setUpRecyclerView()
-        viewModel.getMovieList()
-        initViewCollect()
+       // setUpRecyclerView()
+       // viewModel.getMovieList()
+      //  initViewCollect()
+
+        binding.btnNavigateToReelsFragment.setOnClickListener {
+            // Navigate to the fragment using the Navigation Component
+           /* val bundle =Bundle().apply {
+                putString("key","value")
+            }*/
+            findNavController().navigate(R.id.action_movieListFragment_to_reelsFragment)
+
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -38,34 +49,37 @@ class MovieListFragment : BaseFragment<FragmentMovieListBinding>() {
 
     private fun initViewCollect() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.state.collect{response ->
-                when(response){
+            viewModel.state.collect { response ->
+                when (response) {
                     is Resource.Loading -> {
                         Timber.tag("Response").d("Loading")
                     }
+
                     is Resource.Success -> {
                         Timber.tag("Response").e("Response Size = ${response.data.size}")
                         movieListAdapter?.submitList(response.data)
                     }
+
                     is Resource.Error -> {
-                        binding.noData.visibility= View.VISIBLE
+                        binding.noData.visibility = View.VISIBLE
                         Timber.tag("Response").e(response.throwable.localizedMessage ?: "Error")
                     }
 
                     else -> {
-                        binding.noData.visibility= View.VISIBLE
+                        binding.noData.visibility = View.VISIBLE
                         Timber.tag("Response").d("Unknown Error")
                     }
                 }
             }
         }
     }
+
     companion object {
 
         @JvmStatic
         fun newInstance() =
             MovieListFragment()
 
-            }
+    }
 
 }

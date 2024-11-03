@@ -10,6 +10,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
+        android:background="#6B52A3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -17,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Movies"
+            android:text="Home"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -27,6 +28,18 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnNavigateToReelsFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Play Reels"
+        android:textAllCaps="false"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/movieListRV"
@@ -39,6 +52,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:spanCount="3"
+        android:visibility="gone"
         tools:listitem="@layout/row_movie_item" />
 
     <TextView

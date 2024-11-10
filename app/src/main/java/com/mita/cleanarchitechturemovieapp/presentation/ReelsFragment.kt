@@ -21,7 +21,7 @@ import com.mita.cleanarchitechturemovieapp.presentation.adapter.ReelsAdapter
 class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
     private var reelsAdapter: ReelsAdapter? = null
     private lateinit var viewModel: ReelsViewModel
-    private var currentPlayingPosition = 0
+    private var currentPlayingPosition = -1
 
     override fun viewBindingLayout(): FragmentReelsBinding =
         FragmentReelsBinding.inflate(layoutInflater)
@@ -36,17 +36,22 @@ class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
     private fun initView() {
         if (NetworkUtils.isInternetAvailable(requireContext())) {
             showLoading(true)
-            reelsAdapter = ReelsAdapter(DemoData.reelsList, viewModel, ::showLoading)
+            reelsAdapter = ReelsAdapter(DemoData.reelsList, viewModel, ::showLoading, currentPlayingPosition)
             binding.viewPager.adapter = reelsAdapter
 
             // Handle swipe transitions and playback state
             binding.viewPager.registerOnPageChangeCallback(object :
                 ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                  //  viewModel.onPageChanged(currentPlayingPosition)
-
-                    currentPlayingPosition=position
+                    //viewModel.onPageChanged(position)
+                    if (currentPlayingPosition != -1 && currentPlayingPosition != position) {
+                        viewModel.pausePlayer(currentPlayingPosition)
+                    }
+                    // Play the video for the new position
                     viewModel.playPlayer(position)
+
+                    // Update the current playing position
+                    currentPlayingPosition = position
                 }
             })
             showLoading(false)
@@ -66,12 +71,22 @@ class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.userControllerOff()
+        viewModel.pausePlayer(currentPlayingPosition)
     }
 
     override fun onStop() {
         super.onStop()
-        viewModel.userControllerOff()
+        viewModel.pausePlayer(currentPlayingPosition)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.playPlayer(currentPlayingPosition)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.releasePlayer(currentPlayingPosition)
     }
 
 

@@ -6,4 +6,15 @@
     </style>
 
     <style name="Theme.CleanArchitectureMovieApp" parent="Base.Theme.CleanArchitectureMovieApp" />
+
+    <style name="HomeActivityTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="colorAccent">@color/black</item>
+        <item name="android:splitMotionEvents">false</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+    </style>
 </resources>

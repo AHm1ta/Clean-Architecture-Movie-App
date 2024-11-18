@@ -1,39 +1,83 @@
 package com.mita.cleanarchitechturemovieapp.presentation
 
 import android.os.Bundle
-import android.view.LayoutInflater
+import android.os.Handler
+import android.os.Looper
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
-import com.mita.cleanarchitechturemovieapp.R
 import com.mita.cleanarchitechturemovieapp.common.baseComponent.BaseFragment
-import com.mita.cleanarchitechturemovieapp.common.utils.NetworkUtils
 import com.mita.cleanarchitechturemovieapp.data.model.DemoData
-import com.mita.cleanarchitechturemovieapp.data.model.ReelsItem
-import com.mita.cleanarchitechturemovieapp.databinding.FragmentMovieListBinding
 import com.mita.cleanarchitechturemovieapp.databinding.FragmentReelsBinding
-import com.mita.cleanarchitechturemovieapp.presentation.adapter.ReelsAdapter
+import com.mita.cleanarchitechturemovieapp.presentation.adapter.ReelsPagerAdapter
+import com.mita.cleanarchitechturemovieapp.presentation.reels.Reels2Adapter
+import com.mita.cleanarchitechturemovieapp.presentation.reels.Reels2ViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
-    private var reelsAdapter: ReelsAdapter? = null
-    private lateinit var viewModel: ReelsViewModel
+    private var reelsAdapter: Reels2Adapter? = null
+    private var reelsPagerAdapter: ReelsPagerAdapter? = null
+    private lateinit var viewModel: Reels2ViewModel
     private var currentPlayingPosition = -1
+    private var lastSelectedPosition = -1
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun viewBindingLayout(): FragmentReelsBinding =
         FragmentReelsBinding.inflate(layoutInflater)
 
 
     override fun initializeView(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this)[ReelsViewModel::class.java]
+        viewModel = ViewModelProvider(this)[Reels2ViewModel::class.java]
 
-        initView()
+        // Set the adapter
+        reelsPagerAdapter = ReelsPagerAdapter(requireActivity(), DemoData.reelsList)
+        binding.viewPager.adapter = reelsPagerAdapter
+
+       // initView2()
     }
 
-    private fun initView() {
+    private fun initView2() {
+        reelsAdapter = Reels2Adapter(viewModel)
+        binding.viewPager.adapter = reelsAdapter
+
+        viewModel.reels.observe(this) {
+            reelsAdapter!!.setReels(DemoData.reelsList)
+        }
+
+        binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if (position != lastSelectedPosition) {
+                    lastSelectedPosition = position  // Update the last selected position
+                    viewLifecycleOwner.lifecycleScope.launch {
+                        delay(16)
+                        reelsAdapter!!.releasePlayer()
+                        reelsAdapter!!.playVideoAt(position)
+                    }
+                }
+            }
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+      //  if (currentPlayingPosition >= 0) reelsAdapter?.playVideoAt(currentPlayingPosition)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // reelsAdapter?.releasePlayer()
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+     //   reelsAdapter!!.releasePlayer()
+    }
+
+    /*private fun initView() {
         if (NetworkUtils.isInternetAvailable(requireContext())) {
             showLoading(true)
             reelsAdapter = ReelsAdapter(DemoData.reelsList, viewModel, ::showLoading, currentPlayingPosition)
@@ -52,6 +96,7 @@ class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
 
                     // Update the current playing position
                     currentPlayingPosition = position
+                    reelsAdapter!!.setCurrentPlayingPosition(currentPlayingPosition)
                 }
             })
             showLoading(false)
@@ -63,32 +108,32 @@ class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
                 Toast.LENGTH_LONG
             ).show()
         }
-    }
+    }*/
 
     private fun showLoading(isLoading: Boolean) {
-        binding.loader.visibility = if (isLoading) View.VISIBLE else View.GONE
+      //  binding.loader.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.pausePlayer(currentPlayingPosition)
-    }
+    /* override fun onPause() {
+         super.onPause()
+         viewModel.pausePlayer(currentPlayingPosition)
+     }
 
-    override fun onStop() {
-        super.onStop()
-        viewModel.pausePlayer(currentPlayingPosition)
-    }
+     override fun onStop() {
+         super.onStop()
+         viewModel.pausePlayer(currentPlayingPosition)
+     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.playPlayer(currentPlayingPosition)
-    }
+     override fun onResume() {
+         super.onResume()
+         viewModel.playPlayer(currentPlayingPosition)
+     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.releasePlayer(currentPlayingPosition)
-    }
-
+     override fun onDestroyView() {
+         super.onDestroyView()
+         viewModel.releasePlayer(currentPlayingPosition)
+     }
+ */
 
 
     companion object {

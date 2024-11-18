@@ -24,7 +24,7 @@ class ReelsAdapter(
     private val reelsList: List<ReelsItem>, // List of video URLs
     private val viewModel: ReelsViewModel,
     private val showLoading: (Boolean) -> Unit,
-    private var currentPlayingPosition: Int// ViewModel to manage playback
+    private var currentPlayingPosition: Int,// ViewModel to manage playback
 ) : RecyclerView.Adapter<ReelsAdapter.VideoViewHolder>() {
 
     inner class VideoViewHolder(val binding: ItemReelsLayoutBinding) :
@@ -48,9 +48,10 @@ class ReelsAdapter(
             }
         }*/
     }
+
     fun setCurrentPlayingPosition(position: Int) {
         currentPlayingPosition = position
-        notifyDataSetChanged() // Notify adapter of the new current playing position
+      //  notifyDataSetChanged() // Notify adapter of the new current playing position
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideoViewHolder {
@@ -68,61 +69,63 @@ class ReelsAdapter(
             .setAllowCrossProtocolRedirects(true)
 
         // 3 seconds
-        holder.binding.playerView.setControllerShowTimeoutMs(1500)
+      //  holder.binding.playerView.setControllerShowTimeoutMs(1500)
 
         // Initialize ExoPlayer for each video item
-        holder.exoPlayer = ExoPlayer.Builder(holder.itemView.context)
-            .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
-            .build().apply {
-                setMediaItem(MediaItem.fromUri(reelsData.videoUrl))
-
-                playWhenReady = (position == currentPlayingPosition)  // Play the first video by default
-                holder.binding.playerView.player = this
-                //repeatMode = Player.REPEAT_MODE_ONE
-                              showLoading(true)
-                addListener(object : Player.Listener {
-                    override fun onIsPlayingChanged(isPlaying: Boolean) {
-                        super.onIsPlayingChanged(isPlaying)
-                        if (!isPlaying){
-                            holder.binding.playerView.showController()
-                        }
-                    }
-                    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
-                        if (playbackState == Player.STATE_READY) {
-                            showLoading(false) // Hide loading when ready to play
-                        //    holder.binding.playerView.useController = false
-                            holder.binding.playerView.controllerHideOnTouch= true
-                        }
-                        if (playbackState == Player.STATE_BUFFERING) {
-                            showLoading(true) // Hide loading when ready to play
-                           // holder.binding.playerView.useController = false
-                        }
-                        if (playbackState == Player.STATE_ENDED) {
-                            // Move to the next video
-                            holder.binding.playerView.useController = true
-                        }
-                    }
-
-                    override fun onPlayerError(error: PlaybackException) {
-                        showLoading(false) // Hide loading on error
-                        if (NetworkUtils.isInternetAvailable(holder.binding.playerView.context)){
-                            Toast.makeText(
-                                holder.itemView.context,
-                                "No internet connection. Please try again.",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }else {
-                            Toast.makeText(
-                                holder.itemView.context,
-                                "Error playing video: ${error.message}",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                })
-                prepare()
-                playWhenReady = true
-            }
+//        holder.exoPlayer = ExoPlayer.Builder(holder.itemView.context)
+//            .setMediaSourceFactory(DefaultMediaSourceFactory(dataSourceFactory))
+//            .build().apply {
+//                setMediaItem(MediaItem.fromUri(reelsData.videoUrl))
+//                holder.binding.playerView.player = this
+//                playWhenReady =
+//                    (position == 0)  // Play the first video by default
+//
+//                //repeatMode = Player.REPEAT_MODE_ONE
+//                showLoading(true)
+//                addListener(object : Player.Listener {
+//                    override fun onIsPlayingChanged(isPlaying: Boolean) {
+//                        super.onIsPlayingChanged(isPlaying)
+//                        if (!isPlaying) {
+//                            holder.binding.playerView.showController()
+//                        }
+//                    }
+//
+//                    override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
+//                        if (playbackState == Player.STATE_READY) {
+//                            showLoading(false) // Hide loading when ready to play
+//                            //    holder.binding.playerView.useController = false
+//                            holder.binding.playerView.controllerHideOnTouch = true
+//                        }
+//                        if (playbackState == Player.STATE_BUFFERING) {
+//                            showLoading(true) // Hide loading when ready to play
+//                            // holder.binding.playerView.useController = false
+//                        }
+//                        if (playbackState == Player.STATE_ENDED) {
+//                            // Move to the next video
+//                            holder.binding.playerView.useController = true
+//                        }
+//                    }
+//
+//                    override fun onPlayerError(error: PlaybackException) {
+//                        showLoading(false) // Hide loading on error
+//                        if (NetworkUtils.isInternetAvailable(holder.binding.playerView.context)) {
+//                            Toast.makeText(
+//                                holder.itemView.context,
+//                                "No internet connection. Please try again.",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        } else {
+//                            Toast.makeText(
+//                                holder.itemView.context,
+//                                "Error playing video: ${error.message}",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+//                    }
+//                })
+//                prepare()
+//                playWhenReady = true
+//            }
         // Register the player with the ViewModel
         viewModel.registerPlayer(position, holder.exoPlayer!!)
 
@@ -139,12 +142,12 @@ class ReelsAdapter(
 
     override fun onViewRecycled(holder: VideoViewHolder) {
         super.onViewRecycled(holder)
-        viewModel.releasePlayer(holder.position) // Release player when view is recycled
+        //viewModel.releasePlayer(holder.position) // Release player when view is recycled
         if (holder.adapterPosition < currentPlayingPosition - 1 || holder.adapterPosition > currentPlayingPosition + 1) {
             viewModel.releasePlayer(holder.adapterPosition)
+            holder.exoPlayer?.release()
+            holder.exoPlayer = null
         }
-        holder.exoPlayer?.release() // Release ExoPlayer instance
-        holder.exoPlayer = null
     }
 
     override fun getItemCount() = reelsList.size

@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
         android:orientation="horizontal">
 
         <TextView
@@ -24,8 +25,9 @@
         <androidx.media3.ui.DefaultTimeBar
             android:id="@id/exo_progress"
             android:layout_width="0dp"
-            android:layout_height="2dp"
+            android:layout_height="5dp"
             android:layout_weight="1"
+            android:layout_marginBottom="8dp"
             app:bar_gravity="center" />
 
         <TextView

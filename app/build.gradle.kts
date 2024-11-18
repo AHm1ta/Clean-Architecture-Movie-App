@@ -113,6 +113,17 @@ dependencies {
 
     implementation(Dependencies.LegacySupport.legacySupport)
 
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.androidx.activity.ktx)
+    implementation(libs.imagepicker)
+
+    implementation(libs.ffmpeg.kit.min)
+    implementation(libs.circleimageview)
+
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

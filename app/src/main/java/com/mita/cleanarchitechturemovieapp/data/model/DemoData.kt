@@ -83,18 +83,18 @@ object DemoData {
             20
         ),
         ReelsItem(
-            "10",
+            "11",
             "https://user-images.githubusercontent.com/90382113/170887700-e405c71e-fe31-458d-8572-aea2e801eecc.mp4",
             "User10",
-            "Description 10",
+            "Description 11",
             100,
             20
         ),
         ReelsItem(
-            "10",
+            "12",
             "https://user-images.githubusercontent.com/90382113/170890384-43214cc8-79c6-4815-bcb7-e22f6f7fe1bc.mp4",
             "User10",
-            "Description 10",
+            "Description 12",
             100,
             20
         ),

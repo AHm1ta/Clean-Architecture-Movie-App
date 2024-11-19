@@ -83,6 +83,7 @@ dependencies {
 
     // Hilt
     implementation(Dependencies.Hilt.hilt)
+    implementation(libs.androidx.core.animation)
     kapt(Dependencies.Hilt.compiler)
     implementation(Dependencies.Hilt.hiltNavigation)
 

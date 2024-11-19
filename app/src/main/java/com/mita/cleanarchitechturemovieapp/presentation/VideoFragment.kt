@@ -5,12 +5,17 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.PathInterpolator
+import android.widget.FrameLayout
 import android.widget.SeekBar
-import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
@@ -130,7 +135,64 @@ class VideoFragment : Fragment() {
         // Register player with adapter
         (parentFragment as? ReelsFragment)?.reelsPagerAdapter?.registerPlayer(position, exoPlayer)
 
+        binding.commentButton.setOnClickListener {
+            showDialogFragment()
+        }
+
         return binding.root
+    }
+
+    private fun showDialogFragment() {
+       // resizePlayerView(isSmall = true) // Resize and reposition the PlayerView
+        val layoutParams = binding.playerView.layoutParams as FrameLayout.LayoutParams
+        binding.infoLay.visibility= View.GONE
+        binding.customPlayer.root.visibility= View.GONE
+        binding.customPlayer.root.visibility= View.GONE
+        binding.toolbar.visibility= View.GONE
+        layoutParams.width = dpToPx(150)
+        layoutParams.height = dpToPx(200)
+        layoutParams.gravity = Gravity.TOP or Gravity.CENTER_HORIZONTAL
+        val easeInOutInterpolator = PathInterpolator(0.42f, 0f, 0.58f, 1f)
+        binding.playerView.animate()
+            .translationY(0f)
+            .alpha(1f)
+            .setDuration(500)
+            .setInterpolator(easeInOutInterpolator)
+            .withStartAction {
+                binding.playerView.translationY = -binding.playerView.height.toFloat() // Start above the screen
+                binding.playerView.alpha = 0f // Start fully transparent
+                binding.playerView.visibility = View.VISIBLE // Ensure it's visible before animation
+            }
+            .start()
+        binding.playerView.layoutParams = layoutParams
+
+        val dialogFragment = CommentDialogFragment {
+            resizePlayerView()
+        }
+        dialogFragment.show(requireActivity().supportFragmentManager, "ExampleDialog")
+        // Delay matches animation duration
+    }
+
+    private fun resizePlayerView() {
+        val layoutParams = binding.playerView.layoutParams as FrameLayout.LayoutParams
+            binding.infoLay.visibility= View.VISIBLE
+            binding.customPlayer.root.visibility= View.VISIBLE
+            binding.customPlayer.root.visibility= View.VISIBLE
+            binding.toolbar.visibility= View.VISIBLE
+            layoutParams.width = FrameLayout.LayoutParams.MATCH_PARENT
+            layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
+            layoutParams.gravity = Gravity.CENTER
+            binding.playerView.animate()
+                .translationY(0f) // Restore to original position
+                .setDuration(500)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+
+        binding.playerView.layoutParams = layoutParams
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 
     private fun startSeekBarUpdater() {

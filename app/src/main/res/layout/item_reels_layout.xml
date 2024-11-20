@@ -1,21 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <!-- Video Player -->
-    <com.mita.cleanarchitechturemovieapp.presentation.reels.CustomExoPlayer
+    <androidx.media3.ui.PlayerView
         android:id="@+id/playerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        app:resize_mode="zoom"
+        android:background="@color/black"
+        app:use_controller="false" />
+
+    <include
+        android:id="@+id/customPlayer"
+        layout="@layout/custom_player_controller"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--app:controller_layout_id="@layout/custom_exo_player_control_view"-->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginHorizontal="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reels"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/createVideo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="end"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_edit"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/infoLay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -35,7 +76,7 @@
             android:singleLine="true"
             android:text="Username"
             android:textColor="@android:color/white"
-            android:textSize="16sp"
+            android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/description"
             app:layout_constraintStart_toStartOf="parent" />
 
@@ -44,12 +85,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:layout_marginBottom="40dp"
+            android:layout_marginBottom="8dp"
             android:text="Content description goes here..."
+            android:textColor="@android:color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/location"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="40dp"
+            android:text="Badda, Dhaka"
             android:textColor="@android:color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/userLay"
+            android:layout_width="40dp"
+            android:layout_height="45dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/likeButton"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profileImage"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/user_image"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/followIcon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/follow_bg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/profileImage"
+                app:layout_constraintStart_toStartOf="@+id/profileImage" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <ImageView
             android:id="@+id/likeButton"
@@ -58,21 +143,22 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="6dp"
             android:contentDescription="Like"
-            android:src="@drawable/ic_unlike"
+            android:src="@drawable/heart"
             app:layout_constraintBottom_toTopOf="@+id/likesCount"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
 
         <TextView
             android:id="@+id/likesCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
             android:layout_marginBottom="10dp"
             android:text="202"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/commentButton"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/likeButton"
+            app:layout_constraintStart_toStartOf="@+id/likeButton" />
 
 
         <ImageView
@@ -82,35 +168,87 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="6dp"
             android:contentDescription="Comment"
-            android:src="@drawable/ic_comment"
+            android:src="@drawable/message"
             app:layout_constraintBottom_toTopOf="@+id/commentsCount"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
 
 
         <TextView
             android:id="@+id/commentsCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="132"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/giftButton"
+            app:layout_constraintEnd_toEndOf="@+id/commentButton"
+            app:layout_constraintStart_toStartOf="@+id/commentButton" />
+
+        <ImageView
+            android:id="@+id/giftButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="5dp"
+            android:layout_marginBottom="6dp"
+            android:contentDescription="Comment"
+            android:src="@drawable/gift"
+            app:layout_constraintBottom_toTopOf="@+id/giftTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+
+        <TextView
+            android:id="@+id/giftTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="132"
             android:textColor="@color/white"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/shareButton"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/giftButton"
+            app:layout_constraintStart_toStartOf="@+id/giftButton" />
 
         <ImageView
             android:id="@+id/shareButton"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="Share"
+            android:src="@drawable/share"
+            app:layout_constraintBottom_toTopOf="@+id/shareCount"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
+
+        <TextView
+            android:id="@+id/shareCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="132"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/moreButton"
+            app:layout_constraintEnd_toEndOf="@+id/shareButton"
+            app:layout_constraintStart_toStartOf="@+id/shareButton" />
+
+        <ImageView
+            android:id="@+id/moreButton"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="5dp"
             android:layout_marginBottom="45dp"
             android:contentDescription="Share"
-            android:src="@drawable/ic_share"
+            android:src="@drawable/ic_more"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:tint="@color/white" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

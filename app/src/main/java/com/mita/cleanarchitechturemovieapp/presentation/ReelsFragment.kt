@@ -1,58 +1,56 @@
 package com.mita.cleanarchitechturemovieapp.presentation
 
 import android.os.Bundle
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
 import com.mita.cleanarchitechturemovieapp.common.baseComponent.BaseFragment
 import com.mita.cleanarchitechturemovieapp.data.model.DemoData
 import com.mita.cleanarchitechturemovieapp.databinding.FragmentReelsBinding
-import com.mita.cleanarchitechturemovieapp.presentation.adapter.ReelsPagerAdapter
-import com.mita.cleanarchitechturemovieapp.presentation.reels.Reels2ViewModel
+import com.mita.cleanarchitechturemovieapp.presentation.adapter.ReelsAdapter
 
 
 class ReelsFragment : BaseFragment<FragmentReelsBinding>() {
-    lateinit var reelsPagerAdapter: ReelsPagerAdapter
-    private lateinit var viewModel: Reels2ViewModel
+    private lateinit var adapter: ReelsAdapter
+    private val viewModel: ReelsViewModel by viewModels()
 
     override fun viewBindingLayout(): FragmentReelsBinding =
         FragmentReelsBinding.inflate(layoutInflater)
 
 
     override fun initializeView(savedInstanceState: Bundle?) {
-        viewModel = ViewModelProvider(this)[Reels2ViewModel::class.java]
+        viewModel.setReels(DemoData.reelsList)
+        setupViewPager()
+        observeViewModel()
 
-        // Set the adapter
-        reelsPagerAdapter = ReelsPagerAdapter(this, DemoData.reelsList)
-        binding.viewPager.adapter = reelsPagerAdapter
+    }
 
-        // Handle page change to manage playback
+    private fun setupViewPager() {
+        adapter = ReelsAdapter(
+            viewModel,
+            onShareClicked = { //reel -> shareReel(reel)
+                },
+            requireActivity().supportFragmentManager
+        )
+
+        binding.viewPager.adapter = adapter
         binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                reelsPagerAdapter.pauseAllPlayers() // Pause all players
-                reelsPagerAdapter.startPlayerAtPosition(position) // Play the current player
+                viewModel.setCurrentPosition(position)
             }
         })
     }
 
-    override fun onPause() {
-        super.onPause()
-        reelsPagerAdapter.pauseAllPlayers() // Pause all videos when the fragment pauses
+    private fun observeViewModel() {
+        viewModel.reels.observe(viewLifecycleOwner) {
+            adapter.notifyDataSetChanged()
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
-        reelsPagerAdapter.releaseAllPlayers() // Release ExoPlayer resources
+        adapter.releasePlayers()
     }
 
-
-    companion object {
-        // TODO: Rename and change types and number of parameters
-        fun newInstance(): ReelsFragment {
-            val fragment = ReelsFragment()
-            val args = Bundle()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 }

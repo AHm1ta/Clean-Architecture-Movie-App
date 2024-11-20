@@ -16,7 +16,7 @@
 
         <action
             android:id="@+id/action_movieListFragment_to_videoLoadFragment"
-            app:destination="@id/videoLoadFragment" />
+            app:destination="@id/videoAudioLoadFragment" />
     </fragment>
 
     <fragment
@@ -25,13 +25,23 @@
         android:label="ReelsFragment"
         tools:layout="@layout/fragment_reels"/>
 
-    <fragment
+   <!-- <fragment
         android:id="@+id/videoLoadFragment"
         android:name="com.mita.cleanarchitechturemovieapp.presentation.video.VideoLoadFragment"
         android:label="VideoLoadFragment"
         tools:layout="@layout/fragment_video_load">
         <action
             android:id="@+id/action_videoLoadFragment_to_videoPlayerFragment"
+            app:destination="@id/videoPlayerFragment" />
+    </fragment>-->
+
+    <fragment
+        android:id="@+id/videoAudioLoadFragment"
+        android:name="com.mita.cleanarchitechturemovieapp.presentation.video.VideoAudioLoadFragment"
+        android:label="VideoAudioLoadFragment"
+        tools:layout="@layout/fragment_video_load">
+        <action
+            android:id="@+id/action_videoAudioLoadFragment_to_videoPlayerFragment"
             app:destination="@id/videoPlayerFragment" />
     </fragment>
 
@@ -40,6 +50,8 @@
         android:name="com.mita.cleanarchitechturemovieapp.presentation.video.VideoPlayerFragment"
         android:label="VideoPlayerFragment"
         tools:layout="@layout/fragment_video_player"/>
+
+
 
 
 </navigation>

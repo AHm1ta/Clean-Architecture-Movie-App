@@ -133,7 +133,7 @@ class VideoFragment : Fragment() {
         }
 
         // Register player with adapter
-        (parentFragment as? ReelsFragment)?.reelsPagerAdapter?.registerPlayer(position, exoPlayer)
+        //(parentFragment as? ReelsFragment)?.reelsPagerAdapter?.registerPlayer(position, exoPlayer)
 
         binding.commentButton.setOnClickListener {
             showDialogFragment()
@@ -218,21 +218,6 @@ class VideoFragment : Fragment() {
         binding.customPlayer.timeDuration.text = " / $totalFormatted"
     }
 
-    private fun updateSeekBar() {
-        val currentPosition = exoPlayer.currentPosition
-        val duration = exoPlayer.duration
-
-        binding.customPlayer.seekBar.max = duration.toInt()
-        binding.customPlayer.seekBar.progress = currentPosition.toInt()
-
-        // Format current position and total duration
-        val currentFormatted = formatTime(currentPosition)
-        val totalFormatted = formatTime(duration)
-
-        binding.customPlayer.timePosition.text = "$currentFormatted"
-        binding.customPlayer.timeDuration.text = " / $totalFormatted"
-    }
-
     private fun formatTime(milliseconds: Long): String {
         val minutes = (milliseconds / 1000) / 60
         val seconds = (milliseconds / 1000) % 60
@@ -251,7 +236,7 @@ class VideoFragment : Fragment() {
     }
     override fun onDestroyView() {
         super.onDestroyView()
-        (parentFragment as? ReelsFragment)?.reelsPagerAdapter?.unregisterPlayer(position ?: -1)
+       // (parentFragment as? ReelsFragment)?.reelsPagerAdapter?.unregisterPlayer(position ?: -1)
         exoPlayer.release() // Release ExoPlayer resources
         handler.removeCallbacksAndMessages(null) // Stop updates
         Log.d("VideoFragment", "onDestroyView called")

@@ -90,41 +90,13 @@ class VideoLoadFragment : Fragment() {
         startActivityForResult(intent, audioPickRequestCode)
     }
 
-    private fun mergeVideoAndAudio() {
-        if (videoUri == null || audioUri == null) {
-            Toast.makeText(requireContext(), "Select video and audio first", Toast.LENGTH_SHORT)
-                .show()
-            return
-        }
 
-        val videoPath = getPath(videoUri!!)
-        val audioPath = getPath(audioUri!!)
-        val outputPath = getOutputFilePath()
-
-        val command = arrayOf(
-            "-i", videoPath,
-            "-i", audioPath,
-            "-c:v", "copy",
-            "-c:a", "aac",
-            "-strict", "experimental",
-            outputPath
-        )
-
-        FFmpegKit.executeAsync(command.joinToString(" ")) { session ->
-            if (session.returnCode.isSuccess) {
-                Toast.makeText(requireContext(), "Merging successful!", Toast.LENGTH_SHORT).show()
-                // playMergedVideo(outputPath)
-            } else {
-                Toast.makeText(requireContext(), "Merging failed", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 
     private fun playMergedVideo(path: Uri?) {
 
         val bundle = Bundle()
         bundle.putString("videoPath", path.toString())
-        findNavController().navigate(R.id.action_videoLoadFragment_to_videoPlayerFragment, bundle)
+      //  findNavController().navigate(R.id.action_videoLoadFragment_to_videoPlayerFragment, bundle)
 
     }
 

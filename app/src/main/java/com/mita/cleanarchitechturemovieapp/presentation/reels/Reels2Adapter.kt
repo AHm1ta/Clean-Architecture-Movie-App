@@ -38,7 +38,7 @@ class Reels2Adapter(private val viewModel: Reels2ViewModel) : RecyclerView.Adapt
 
         fun bind(reel: ReelsItem, position: Int) {
 
-            binding.playerView.setVideoUrl(reel.videoUrl)
+           /* binding.playerView.setVideoUrl(reel.videoUrl)
 
             if (position == currentPlayingPosition) {
                 currentPlayer = binding.playerView
@@ -46,7 +46,7 @@ class Reels2Adapter(private val viewModel: Reels2ViewModel) : RecyclerView.Adapt
             } else {
                 binding.playerView.pause()
             }
-
+*/
             binding.likeButton.setOnClickListener {
                 viewModel.likeReel(reel.id)
                 binding.likeButton.setImageResource(R.drawable.ic_liked)
